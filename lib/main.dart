@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_class/providers/task_management_provider.dart';
-import 'package:flutter_ui_class/screens/UI_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_ui_class/firebase_options.dart';
+import 'package:flutter_ui_class/screens/ui_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const FlutterUIApp());
 }
 
@@ -12,25 +14,17 @@ class FlutterUIApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_)=> TaskManagementProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: const HomePage(title: 'FLUTTER UI DEMO'),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      home: const HomePage(title: 'FLUTTER UI DEMO'),
     );
   }
 }
 
-
-
-class HomePage extends StatefulWidget { 
+class HomePage extends StatefulWidget {
   final String title;
 
   const HomePage({super.key, required this.title});
@@ -44,7 +38,7 @@ class _HomePageState extends State<HomePage> {
 
   void _incrementCounter() {
     _counter++;
-    print('Counter value: $_counter');
+    debugPrint('Counter value: $_counter');
     setState(() {});
   }
 
@@ -135,20 +129,18 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(width: 20),
 
                   IconButton(
-                    onPressed: (){
+                    onPressed: () {
                       // home -> page 2 -> page 3 -> page 4 -> page 5
 
                       // |Page 5 |
                       // |Page 4 |
                       // |Page 3 |
-                      // |Page 2 |  
+                      // |Page 2 |
                       // |Home   |
 
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => UiPage(),)
+                        MaterialPageRoute(builder: (context) => const UiPage()),
                       );
-
-
                     },
                     color: Colors.purpleAccent,
                     iconSize: 40,
